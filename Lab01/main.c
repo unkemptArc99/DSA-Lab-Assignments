@@ -11,21 +11,21 @@ int** init_2d (int r, int c);
 int main(int argc,char *argv[])	//Command line arguments used in the program to merge Part B and Part Cof the assignment in the same file.
 {
 	int i,j,hi=0,r,c;		//hi is the sentinel for choosing of Part B and Part C
-	if(strcmp(argv[1],"-h")==0)		//The manual/help option for the program.
+	if(argc==1||strcmp(argv[1],"-h")==0)		//The manual/help option for the program.
 	{
 		printf("This program is for finding out the optimal threshold of the images.\n");
 		printf("Use the following command line arguments to access the program:\n");
+		printf("-nhisto : For running the optimal threshold program without the use of histogram algorithm.\n");
 		printf("-histo : For running the optimal threshold program with the use of histogram algorithm.\n");
-		printf("-chisto : For running the optimal threshold program with the use of histogram algorithm.\n");
 		printf("-1 : For running the program on the first set of data.\n");
 		printf("-2 : For running the program on the second set of data.\n");
 		printf("-3 : For running the program on the third set of data.\n");
 		printf("\"Remember that the file names have to be specified only after the histogram selection.\"\n");
 		printf("For example you should type \"./main -histo -1\" to use the histogram and read the data from the first set of data.\n");
 	}
-	else if(strcmp(argv[1],"-histo")==0)
+	else if(strcmp(argv[1],"-nhisto")==0)
 		hi=0;
-	else if(strcmp(argv[1],"-chisto")==0)
+	else if(strcmp(argv[1],"-histo")==0)
 		hi=1;
 	else
 	{
@@ -33,7 +33,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 		return -1;
 	}
 	int file=0;
-	if(strcmp(argv[1],"-histo")==0 || strcmp(argv[1],"-chisto")==0)		//The data file to be worked upon will be mentioned in this 'if' statement
+	if(strcmp(argv[1],"-nhisto")==0 || strcmp(argv[1],"-histo")==0)		//The data file to be worked upon will be mentioned in this 'if' statement
 	{
 		if(strcmp(argv[2],"-1")==0)	//first data
 			file=1;
@@ -51,7 +51,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 	FILE *fp;					//File pointer to be used
     if(file==1)
     {
-    	fp=fopen("1.txt","r");
+    	fp=fopen("/home/abhishek/Documents/DSA_Resources/Lab01/1.txt","r");
 		if(fp==NULL)
 		{
 			printf("ERROR : INPUT FILE NOT FOUND!\nCheck the directory for the input file, closing the program\n");
@@ -62,8 +62,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
     }
     else if(file==2)
     {
-    	FILE *fp;
-		fp=fopen("2.txt","r");
+		fp=fopen("/home/abhishek/Documents/DSA_Resources/Lab01/2.txt","r");
 		if(fp==NULL)
 		{
 			printf("ERROR : INPUT FILE NOT FOUND!\nCheck the directory for the input file, closing the program\n");
@@ -74,8 +73,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
     }
     else if(file==3)
     {
-    	FILE *fp;
-		fp=fopen("1.txt","r");
+   		fp=fopen("/home/abhishek/Documents/DSA_Resources/Lab01/1.txt","r");
 		if(fp==NULL)
 		{
 			printf("ERROR : INPUT FILE NOT FOUND!\nCheck the directory for the input file, closing the program\n");
@@ -97,6 +95,12 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 			else
 				fscanf(fp,"%d\t",&x[i][j]);
 		}
+	}
+	for(i=0;i<r;++i)
+	{
+		for(j=0;j<c;++j)
+			printf("%d ",x[i][j]);
+		printf("\n");
 	}
 	return 0;
 }
