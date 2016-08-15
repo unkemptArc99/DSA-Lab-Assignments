@@ -138,7 +138,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 					if(x[j][k]<=i)
 						sda=sda+(x[j][k]-meana)*(x[j][k]-meana);
 					else
-						sdb=sda+(x[j][k]-meanb)*(x[j][k]-meanb);
+						sdb=sdb+(x[j][k]-meanb)*(x[j][k]-meanb);
 				}
 			}
 			sda=(double)sqrt(sda/npa);
