@@ -168,7 +168,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 		printf("Thresholding done in %lf ms\n",time_spent);
 		fclose(fp1);
 	}
-	else if(h1==1)
+	else if(hi==1)
 	{
 		begin=clock();
 		printf("Performing threshold using iterative method......\n");
@@ -184,6 +184,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 			}
 		}
 	}
+	free(x);
 	return 0;
 }
 
