@@ -10,7 +10,7 @@ int** init_2d (int r, int c);
 
 int main(int argc,char *argv[])	//Command line arguments used in the program to merge Part B and Part Cof the assignment in the same file.
 {
-	int i,j,hi=0,r,c;		//hi is the sentinel for choosing of Part B and Part C
+	int i,j,k,hi=0,r,c;		//hi is the sentinel for choosing of Part B and Part C
 	if(argc==1||strcmp(argv[1],"-h")==0)		//The manual/help option for the program.
 	{
 		printf("This program is for finding out the optimal threshold of the images.\n");
@@ -47,7 +47,6 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 			return -1;
 		}
 	}
-	//Part A Start
 	FILE *fp;					//File pointer to be used
     if(file==1)
     {
@@ -82,6 +81,9 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 		r=10967;
 		c=10004;
     }
+    //Part A start
+    clock_t begin=clock();
+    printf("Reading the input data......\n");
     int **x;
     x=init_2d(r,c);
     if(x==NULL)
@@ -96,11 +98,67 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 				fscanf(fp,"%d\t",&x[i][j]);
 		}
 	}
-	for(i=0;i<r;++i)
+	clock_t end=clock();
+	double time_spent=(double)(end-begin)/CLOCKS_PER_SEC;		//help from stackoverflow.com for this
+	printf("Data read in %lf ms\n",time_spent);
+	//Part A End
+	//Part B start
+	if(hi==0)
 	{
-		for(j=0;j<c;++j)
-			printf("%d ",x[i][j]);
-		printf("\n");
+		begin=clock();
+		printf("Performing threshold using iterative method......\n");
+		int npa=0,npb=0;
+		double meana=0.0,meanb=0.0,sda=0.0,sdb=0.0,dprime,nratio;
+		FILE *fp1;
+		fp1=fopen("result.dat","w");
+		for(i=0;i<256;++i)
+		{
+			for(j=0;j<r;++j)
+			{
+				for(k=0;k<c;++k)
+				{
+					if(x[j][k]<=i)
+					{
+						npa++;
+						meana=meana+(double)x[j][k];
+					}
+					else
+					{
+						npb++;
+						meanb=meanb+(double)x[j][k];
+					}
+				}
+			}
+			meana=meana/(double)npa;
+			meanb=meanb/(double)npb;
+			for(j=0;j<r;++j)
+			{
+				for(k=0;k<c;++k)
+				{
+					if(x[j][k]<=i)
+						sda=sda+(x[j][k]-meana)*(x[j][k]-meana);
+					else
+						sdb=sda+(x[j][k]-meanb)*(x[j][k]-meanb);
+				}
+			}
+			sda=(double)sqrt(sda/npa);
+			sdb=(double)sqrt(sdb/npb);
+			nratio=((double)npa)/((double)npb);
+			dprime=(abs(meana-meanb)/sqrt(sda*sda+sdb*sdb));
+			fprintf(fp,"%d\t%lf\t%lf\n",i,nratio,dprime);
+			printf("%d\t%lf\t%lf\n",i,nratio,dprime);
+			npa=0;
+			npb=0;
+			meana=0.0;
+			meanb=0.0;
+			sda=0.0;
+			sdb=0.0;
+			nratio=0.0;
+			dprime=0.0;
+		}
+		end=clock();
+		time_spent=(double)(end-begin)/CLOCKS_PER_SEC;
+		printf("Thresholding done in %lf ms\n",time_spent);
 	}
 	return 0;
 }
