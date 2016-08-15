@@ -1,3 +1,9 @@
+/***********************************************
+Name: Abhishek
+Roll: B15103
+Purpose: IC250 Assignment 01 - Question 1 - Optimum Threshold Selection 
+Date: 18/08/2016
+***********************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -56,7 +62,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 			printf("ERROR : INPUT FILE NOT FOUND!\nCheck the directory for the input file, closing the program\n");
 			return -1;
 		}
-		r=198;
+		r=198;				//SPECIFYING THE ROWS AND COLUMNS BECAUSE THEY ARE NOT GIVEN IN THE .TXT FILE
 		c=200;
     }
     else if(file==2)
@@ -67,7 +73,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 			printf("ERROR : INPUT FILE NOT FOUND!\nCheck the directory for the input file, closing the program\n");
 			return -1;
 		}
-		r=1200;
+		r=1200;				//SPECIFYING THE ROWS AND COLUMNS BECAUSE THEY ARE NOT GIVEN IN THE .TXT FILE
 		c=1920;
     }
     else if(file==3)
@@ -78,7 +84,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 			printf("ERROR : INPUT FILE NOT FOUND!\nCheck the directory for the input file, closing the program\n");
 			return -1;
 		}
-		r=10967;
+		r=10967;			//SPECIFYING THE ROWS AND COLUMNS BECAUSE THEY ARE NOT GIVEN IN THE .TXT FILE
 		c=10004;
     }
     //Part A start
@@ -98,6 +104,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 				fscanf(fp,"%d\t",&x[i][j]);
 		}
 	}
+	fclose(fp);
 	clock_t end=clock();
 	double time_spent=(double)(end-begin)/CLOCKS_PER_SEC;		//help from stackoverflow.com for this
 	printf("Data read in %lf ms\n",time_spent);
@@ -109,9 +116,9 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 		printf("Performing threshold using iterative method......\n");
 		int npa=0,npb=0;
 		double meana=0.0,meanb=0.0,sda=0.0,sdb=0.0,dprime,nratio;
-		FILE *fp1;
+		FILE *fp1;						//Initialising the file pointer for writing
 		fp1=fopen("result.dat","w");
-		for(i=0;i<256;++i)
+		for(i=0;i<256;++i)				//Threshold Selection
 		{
 			for(j=0;j<r;++j)
 			{
@@ -129,7 +136,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 					}
 				}
 			}
-			meana=meana/(double)npa;
+			meana=meana/(double)npa;		//Mean Calculation
 			meanb=meanb/(double)npb;
 			for(j=0;j<r;++j)
 			{
@@ -144,8 +151,8 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 			sda=(double)sqrt(sda/npa);
 			sdb=(double)sqrt(sdb/npb);
 			nratio=((double)npa)/((double)npb);
-			dprime=(abs(meana-meanb)/sqrt(sda*sda+sdb*sdb));
-			fprintf(fp,"%d\t%lf\t%lf\n",i,nratio,dprime);
+			dprime=(fabs(meana-meanb)/sqrt(sda*sda+sdb*sdb));
+			fprintf(fp1,"%d\t%lf\t%lf\n",i,nratio,dprime);
 			printf("%d\t%lf\t%lf\n",i,nratio,dprime);
 			npa=0;
 			npb=0;
@@ -159,6 +166,23 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 		end=clock();
 		time_spent=(double)(end-begin)/CLOCKS_PER_SEC;
 		printf("Thresholding done in %lf ms\n",time_spent);
+		fclose(fp1);
+	}
+	else if(h1==1)
+	{
+		begin=clock();
+		printf("Performing threshold using iterative method......\n");
+		int npa=0,npb=0;
+		double meana=0.0,meanb=0.0,sda=0.0,sdb=0.0,dprime,nratio;
+		FILE *fp1;
+		fp1=fopen("result_histo.dat","w");
+		for(i=0;i<r;++i)
+		{
+			for(j=0;j<c;++j)
+			{
+
+			}
+		}
 	}
 	return 0;
 }
