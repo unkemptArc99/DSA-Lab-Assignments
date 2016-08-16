@@ -148,11 +148,11 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 						sdb=sdb+(x[j][k]-meanb)*(x[j][k]-meanb);
 				}
 			}
-			sda=(double)sqrt(sda/npa);
+			sda=(double)sqrt(sda/npa);		//Standard Deviation Calculation
 			sdb=(double)sqrt(sdb/npb);
-			nratio=((double)npa)/((double)npb);
-			dprime=(fabs(meana-meanb)/sqrt(sda*sda+sdb*sdb));
-			fprintf(fp1,"%d\t%lf\t%lf\n",i,nratio,dprime);
+			nratio=((double)npa)/((double)npb);			//nRatio Calculation
+			dprime=(fabs(meana-meanb)/sqrt(sda*sda+sdb*sdb));		//d` calculation
+			fprintf(fp1,"%d\t%lf\t%lf\n",i,nratio,dprime);		//printing file
 			printf("%d\t%lf\t%lf\n",i,nratio,dprime);
 			npa=0;
 			npb=0;
@@ -172,17 +172,57 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 	{
 		begin=clock();
 		printf("Performing threshold using iterative method......\n");
-		int npa=0,npb=0;
+		long long npa=0,npb=0;
 		double meana=0.0,meanb=0.0,sda=0.0,sdb=0.0,dprime,nratio;
 		FILE *fp1;
 		fp1=fopen("result_histo.dat","w");
+		int arr1d[256];				//Histogram Array
+		for(i=0;i<256;++i)
+			arr1d[i]=0;
 		for(i=0;i<r;++i)
 		{
 			for(j=0;j<c;++j)
 			{
-
+				arr1d[x[i][j]]++;
 			}
 		}
+		int arr1dc[256];			//Cumulative Histogram Array
+		arr1dc[0]=arr1d[0];
+		for(i=1;i<256;++i)
+			arr1dc[i]=arr1d[i]+arr1dc[i-1];
+		for(i=0;i<256;++i)
+		{
+			for(j=0;j<=i;++j)
+				meana=meana+j*arr1d[j];
+			for(j=i+1;j<256;++j)
+				meanb=meanb+j*arr1d[j];
+			npa=arr1dc[i];
+			npb=arr1dc[255]-arr1dc[i];
+			meana=meana/npa;				//Mean Calculation
+			meanb=meanb/npb;
+			for(j=0;j<=i;++j)
+				sda=sda+(((j-meana)*(j-meana))*arr1d[j]);
+			for(j=i+1;j<256;++j)
+				sdb=sdb+(((j-meanb)*(j-meanb))*arr1d[j]);
+			sda=(double)sqrt(sda/npa);			//Standard Deviation Calculation
+			sdb=(double)sqrt(sdb/npb);
+			nratio=((double)npa)/((double)npb);			//nRatio Calculation
+			dprime=(fabs(meana-meanb)/sqrt(sda*sda+sdb*sdb));		//d` Calculation
+			fprintf(fp1,"%d\t%lf\t%lf\n",i,nratio,dprime);		//printing in file
+			printf("%d\t%lf\t%lf\n",i,nratio,dprime);
+			npa=0;
+			npb=0;
+			meana=0.0;
+			meanb=0.0;
+			sda=0.0;
+			sdb=0.0;
+			nratio=0.0;
+			dprime=0.0;
+		}
+		end=clock();
+		time_spent=(double)(end-begin)/CLOCKS_PER_SEC;
+		printf("Thresholding done in %lf ms\n",time_spent);
+		fclose(fp1);
 	}
 	free(x);
 	return 0;
