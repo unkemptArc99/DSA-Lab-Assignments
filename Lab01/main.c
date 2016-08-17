@@ -10,9 +10,10 @@ Date: 18/08/2016
 #include <math.h>
 #include <time.h>
 #include <unistd.h>
+//#include <glib.h>
 
 //Declaring the function entities to create the dynamic 2D array
-int** init_2d (int r, int c);	
+int** make_arr (int r, int c);	
 
 int main(int argc,char *argv[])	//Command line arguments used in the program to merge Part B and Part Cof the assignment in the same file.
 {
@@ -91,7 +92,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
     clock_t begin=clock();
     printf("Reading the input data......\n");
     int **x;
-    x=init_2d(r,c);
+    x=make_arr(r,c);
     if(x==NULL)
 		return -1;
 	for (i=0;i<r;i++)			//scanning the input
@@ -107,11 +108,12 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 	fclose(fp);
 	clock_t end=clock();
 	double time_spent=(double)(end-begin)/CLOCKS_PER_SEC;		//help from stackoverflow.com for this
-	printf("Data read in %lf ms\n",time_spent);
+	printf("Data read in %lf s\n",time_spent);
 	//Part A End
 	//Part B start
 	if(hi==0)
 	{
+		//GSList *clus_A=NULL, *clus_B=NULL;
 		begin=clock();
 		printf("Performing threshold using iterative method......\n");
 		int npa=0,npb=0;
@@ -128,11 +130,13 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 					{
 						npa++;
 						meana=meana+(double)x[j][k];
+						//clus_A=g_slist_append(clus_A,GINT_TO_POINTER(x[j][k]));
 					}
 					else
 					{
 						npb++;
 						meanb=meanb+(double)x[j][k];
+						//clus_B=g_slist_append(clus_B,GINT_TO_POINTER(x[j][k]));
 					}
 				}
 			}
@@ -165,12 +169,13 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 		}
 		end=clock();
 		time_spent=(double)(end-begin)/CLOCKS_PER_SEC;
-		printf("Thresholding done in %lf ms\n",time_spent);
+		printf("Thresholding done in %lf s\n",time_spent);
 		fclose(fp1);
 	}
 	//Part C start
 	else if(hi==1)
 	{
+		//GSList *clus_A=NULL, *clus_B=NULL;
 		begin=clock();
 		printf("Performing threshold using iterative method......\n");
 		long long npa=0,npb=0;
@@ -197,6 +202,12 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 				meana=meana+j*arr1d[j];
 			for(j=i+1;j<256;++j)
 				meanb=meanb+j*arr1d[j];
+			for(j=0;j<=i;++j)
+				for(k=0;k<arr1d[j];++k)
+					//clus_A=g_slist_append(clus_A,GINT_TO_POINTER(x[j][k]));
+			for(j=i+1;j<256;++j)
+				for(k=0;k<arr1d[j];++k)
+					//clus_B=g_slist_append(clus_B,GINT_TO_POINTER(x[j][k]));
 			npa=arr1dc[i];
 			npb=arr1dc[255]-arr1dc[i];
 			meana=meana/npa;				//Mean Calculation
@@ -223,14 +234,14 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 		}
 		end=clock();
 		time_spent=(double)(end-begin)/CLOCKS_PER_SEC;
-		printf("Thresholding done in %lf ms\n",time_spent);
+		printf("Thresholding done in %lf s\n",time_spent);
 		fclose(fp1);
 	}
 	free(x);
 	return 0;
 }
 
-int ** init_2d(int r,int c) //Initialize the matrix (allocate the memory for matrix)
+int ** make_arr(int r,int c) //Initialize the matrix (allocate the memory for matrix)
 {
 	int **x, i, j;//x is a matrix pointer
         x = (int **) malloc(r * sizeof(int *));// Allocating the space for r row pointers x[0],x[1],----x[r-1]
