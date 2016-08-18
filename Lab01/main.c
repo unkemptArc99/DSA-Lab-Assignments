@@ -113,16 +113,16 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 	//Part B start
 	if(hi==0)
 	{
-		//GSList *clus_A=NULL, *clus_B=NULL;
+//		GSList *clus_A=NULL, *clus_B=NULL;
 		begin=clock();
 		printf("Performing threshold using iterative method......\n");
 		int npa=0,npb=0;
 		double meana=0.0,meanb=0.0,sda=0.0,sdb=0.0,dprime,nratio;
 		FILE *fp1;						//Initialising the file pointer for writing
 		fp1=fopen("result.dat","w");
-		for(i=0;i<256;++i)				//Threshold Selection
+		for(i=0;i<255;++i)				//Threshold Selection
 		{
-			//GSList *clus_A=NULL, *clus_B=NULL;
+//			GSList *clus_A=NULL, *clus_B=NULL;
 			for(j=0;j<r;++j)
 			{
 				for(k=0;k<c;++k)
@@ -131,13 +131,13 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 					{
 						npa++;
 						meana=meana+(double)x[j][k];
-						//clus_A=g_slist_append(clus_A,GINT_TO_POINTER(x[j][k]));
+//						clus_A=g_slist_append(clus_A,GINT_TO_POINTER(x[j][k]));
 					}
 					else
 					{
 						npb++;
 						meanb=meanb+(double)x[j][k];
-						//clus_B=g_slist_append(clus_B,GINT_TO_POINTER(x[j][k]));
+//						clus_B=g_slist_append(clus_B,GINT_TO_POINTER(x[j][k]));
 					}
 				}
 			}
@@ -167,13 +167,18 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 			sdb=0.0;
 			nratio=0.0;
 			dprime=0.0;
-			//g_slist_free(clus_A);
-			//g_slist_free(clus_B);
+//			g_slist_free(clus_A);
+//			g_slist_free(clus_B);
 		}
 		end=clock();
 		time_spent=(double)(end-begin)/CLOCKS_PER_SEC;
 		printf("Thresholding done in %lf s\n",time_spent);
 		fclose(fp1);
+		char *commandsForGnuplot[]={"set terminal png","set output \'1.png\'","set title \"th v/s nratio\"","set xlabel \"th\"","set ylabel \"nratio\"","set key outside","plot \"result.dat\" using 1:2 with lines","set output \'2.png\'","set title \"th v/s dprime\"","set xlabel \"th\"","set ylabel \"dprime\"","set key outside","plot \"result.dat\" using 1:3 with lines","set output \'3.png\'","set title \"dprime v/s nratio\"","set xlabel \"dprime\"","set ylabel \"nratio\"","set key outside","plot \"result.dat\" using 3:2 with lines"};
+		FILE *gnuplotPipe=popen("gnuplot -persistent","w");
+		for(i=0;i<19;++i)
+			fprintf(gnuplotPipe,"%s \n",commandsForGnuplot[i]);
+		pclose(gnuplotPipe);
 	}
 	//Part C start
 	else if(hi==1)
@@ -183,7 +188,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 		long long npa=0,npb=0;
 		double meana=0.0,meanb=0.0,sda=0.0,sdb=0.0,dprime,nratio;
 		FILE *fp1;
-		fp1=fopen("result_histo.dat","w");
+		fp1=fopen("result.dat","w");
 		long long arr1d[256];				//Histogram Array
 		for(i=0;i<256;++i)
 			arr1d[i]=0;
@@ -198,19 +203,19 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 		arr1dc[0]=arr1d[0];
 		for(i=1;i<256;++i)
 			arr1dc[i]=arr1d[i]+arr1dc[i-1];
-		for(i=0;i<256;++i)
+		for(i=0;i<255;++i)
 		{
-			//GSList *clus_A=NULL, *clus_B=NULL;
+//			GSList *clus_A=NULL, *clus_B=NULL;
 			for(j=0;j<=i;++j)
 				meana=meana+j*arr1d[j];
 			for(j=i+1;j<256;++j)
 				meanb=meanb+j*arr1d[j];
-			//for(j=0;j<=i;++j)
-			//	for(k=0;k<arr1d[j];++k)
-					//clus_A=g_slist_append(clus_A,GINT_TO_POINTER(x[j][k]));
-			//for(j=i+1;j<256;++j)
-			//	for(k=0;k<arr1d[j];++k)
-					//clus_B=g_slist_append(clus_B,GINT_TO_POINTER(x[j][k]));
+//			for(j=0;j<=i;++j)
+//				for(k=0;k<arr1d[j];++k)
+//					clus_A=g_slist_append(clus_A,GINT_TO_POINTER(x[j][k]));
+//			for(j=i+1;j<256;++j)
+//				for(k=0;k<arr1d[j];++k)
+//					clus_B=g_slist_append(clus_B,GINT_TO_POINTER(x[j][k]));
 			npa=arr1dc[i];
 			npb=arr1dc[255]-arr1dc[i];
 			meana=meana/npa;				//Mean Calculation
@@ -226,20 +231,26 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 			fprintf(fp1,"%d\t%lf\t%lf\n",i,nratio,dprime);		//printing in file
 			printf("%d\t%lf\t%lf\n",i,nratio,dprime);
 			npa=0;
-			npb=0;
+			npb=0;											//Resetting the values to zero for the next threshold
 			meana=0.0;
 			meanb=0.0;
 			sda=0.0;
 			sdb=0.0;
 			nratio=0.0;
 			dprime=0.0;
-			//g_slist_free(clus_A);
-			//g_slist_free(clus_B);
+//			g_slist_free(clus_A);
+//			g_slist_free(clus_B);
 		}
 		end=clock();
 		time_spent=(double)(end-begin)/CLOCKS_PER_SEC;
 		printf("Thresholding done in %lf s\n",time_spent);
+		printf("result.dat is generated at \'home/abhishek/Documents/DSA/Lab01/\'\n");
 		fclose(fp1);
+		char *commandsForGnuplot[]={"set terminal png","set output \'1_2.png\'","set title \"th v/s nratio\"","set xlabel \"th\"","set ylabel \"nratio\"","set key outside","plot \"result.dat\" using 1:2 with lines","set output \'2_2.png\'","set title \"th v/s dprime\"","set xlabel \"th\"","set ylabel \"dprime\"","set key outside","plot \"result.dat\" using 1:3 with lines","set output \'3_2.png\'","set title \"dprime v/s nratio\"","set xlabel \"dprime\"","set ylabel \"nratio\"","set key outside","plot \"result.dat\" using 3:2 with lines"};
+		FILE *gnuplotPipe=popen("gnuplot -persistent","w");
+		for(i=0;i<19;++i)
+			fprintf(gnuplotPipe,"%s \n",commandsForGnuplot[i]);
+		pclose(gnuplotPipe);
 	}
 	free(x);
 	return 0;
