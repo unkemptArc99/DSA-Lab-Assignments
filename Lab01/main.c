@@ -122,6 +122,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 		fp1=fopen("result.dat","w");
 		for(i=0;i<256;++i)				//Threshold Selection
 		{
+			//GSList *clus_A=NULL, *clus_B=NULL;
 			for(j=0;j<r;++j)
 			{
 				for(k=0;k<c;++k)
@@ -166,6 +167,8 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 			sdb=0.0;
 			nratio=0.0;
 			dprime=0.0;
+			//g_slist_free(clus_A);
+			//g_slist_free(clus_B);
 		}
 		end=clock();
 		time_spent=(double)(end-begin)/CLOCKS_PER_SEC;
@@ -175,7 +178,6 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 	//Part C start
 	else if(hi==1)
 	{
-		//GSList *clus_A=NULL, *clus_B=NULL;
 		begin=clock();
 		printf("Performing threshold using iterative method......\n");
 		long long npa=0,npb=0;
@@ -198,6 +200,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 			arr1dc[i]=arr1d[i]+arr1dc[i-1];
 		for(i=0;i<256;++i)
 		{
+			//GSList *clus_A=NULL, *clus_B=NULL;
 			for(j=0;j<=i;++j)
 				meana=meana+j*arr1d[j];
 			for(j=i+1;j<256;++j)
@@ -231,6 +234,8 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 			sdb=0.0;
 			nratio=0.0;
 			dprime=0.0;
+			//g_slist_free(clus_A);
+			//g_slist_free(clus_B);
 		}
 		end=clock();
 		time_spent=(double)(end-begin)/CLOCKS_PER_SEC;
