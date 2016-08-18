@@ -179,7 +179,7 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 	else if(hi==1)
 	{
 		begin=clock();
-		printf("Performing threshold using iterative method......\n");
+		printf("Performing threshold using histogram method......\n");
 		long long npa=0,npb=0;
 		double meana=0.0,meanb=0.0,sda=0.0,sdb=0.0,dprime,nratio;
 		FILE *fp1;
@@ -205,11 +205,11 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 				meana=meana+j*arr1d[j];
 			for(j=i+1;j<256;++j)
 				meanb=meanb+j*arr1d[j];
-			for(j=0;j<=i;++j)
-				for(k=0;k<arr1d[j];++k)
+			//for(j=0;j<=i;++j)
+			//	for(k=0;k<arr1d[j];++k)
 					//clus_A=g_slist_append(clus_A,GINT_TO_POINTER(x[j][k]));
-			for(j=i+1;j<256;++j)
-				for(k=0;k<arr1d[j];++k)
+			//for(j=i+1;j<256;++j)
+			//	for(k=0;k<arr1d[j];++k)
 					//clus_B=g_slist_append(clus_B,GINT_TO_POINTER(x[j][k]));
 			npa=arr1dc[i];
 			npb=arr1dc[255]-arr1dc[i];
@@ -225,7 +225,6 @@ int main(int argc,char *argv[])	//Command line arguments used in the program to 
 			dprime=(fabs(meana-meanb)/sqrt(sda*sda+sdb*sdb));		//d` Calculation
 			fprintf(fp1,"%d\t%lf\t%lf\n",i,nratio,dprime);		//printing in file
 			printf("%d\t%lf\t%lf\n",i,nratio,dprime);
-			npa=0;
 			npa=0;
 			npb=0;
 			meana=0.0;
