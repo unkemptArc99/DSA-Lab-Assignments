@@ -28,6 +28,14 @@ void DiskMove(int n,char source,char dest,char spare)				//Recursive method func
 	}
 }
 
+void swap(int *arr1,int *arr2,int *key1,int *key2)				//For swapping elements in the iterative version of the code. Essentially the push and pop function of the stack.
+{
+	*key2++;
+	arr2[*key2]=arr1[*key1];
+	arr1[*key1]=-1;
+	*key1--;
+}
+
 int main(int argc, char const *argv[])
 {
 	bool selection;			//False, if recursion is chosen, and True, if iteration is chosen.
@@ -91,34 +99,22 @@ int main(int argc, char const *argv[])
 					if(y==-1)				//Peg B empty
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,s,sp);
-						keyb++;
-						b[keyb]=a[keya];
-						a[keya]=-1;
-						keya--;
+						swap(a,b,&keya,&keyb);
 					}
 					else if(x==-1)			//Peg A empty
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,sp,s);
-						keya++;
-						a[keya]=b[keyb];
-						b[keyb]=-1;
-						keyb--;
+						swap(b,a,&keyb,&keya);
 					}
 					else if(x<y)			//Peg B has larger disk on the top than Peg A
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,s,sp);
-						keyb++;
-						b[keyb]=a[keya];
-						a[keya]=-1;
-						keya--;	
+						swap(a,b,&keya,&keyb);
 					}
 					else if(y<x)			//Peg A has larger disk on the top than Peg B
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,sp,s);
-						keya++;
-						a[keya]=b[keyb];
-						b[keyb]=-1;
-						keyb--;
+						swap(b,a,&keyb,&keya);
 					}
 				}
 				else if(i%3==2)
@@ -128,34 +124,22 @@ int main(int argc, char const *argv[])
 					if(y==-1)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,s,d);
-						keyc++;
-						c[keyc]=a[keya];
-						a[keya]=-1;
-						keya--;
+						swap(a,c,&keya,&keyc);
 					}
 					else if(x==-1)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,d,s);
-						keya++;
-						a[keya]=c[keyc];
-						c[keyc]=-1;
-						keyc--;
+						swap(c,a,&keyc,&keya);
 					}
 					else if(x<y)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,s,d);
-						keyc++;
-						c[keyc]=a[keya];
-						a[keya]=-1;
-						keya--;
+						swap(a,c,&keya,&keyc);
 					}
 					else if(y<x)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,d,s);
-						keya++;
-						a[keya]=c[keyc];
-						c[keyc]=-1;
-						keyc--;
+						swap(c,a,&keyc,&keya);
 					}
 				}
 				else
@@ -165,34 +149,22 @@ int main(int argc, char const *argv[])
 					if(y==-1)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,sp,d);
-						keyc++;
-						c[keyc]=b[keyb];
-						b[keyb]=-1;
-						keyb--;
+						swap(b,c,&keyb,&keyc);
 					}
 					else if(x==-1)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,d,sp);
-						keyb++;
-						b[keyb]=c[keyc];
-						c[keyc]=-1;
-						keyc--;
+						swap(c,b,&keyc,&keyb);
 					}
 					else if(x<y)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,sp,d);
-						keyc++;
-						c[keyc]=b[keyb];
-						b[keyb]=-1;
-						keyb--;
+						swap(b,c,&keyb,&keyc);
 					}
 					else if(y<x)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,d,sp);
-						keyb++;
-						b[keyb]=c[keyc];
-						c[keyc]=-1;
-						keyc--;
+						swap(c,b,&keyc,&keyb);
 					}	
 				}
 			}
@@ -210,34 +182,22 @@ int main(int argc, char const *argv[])
 					if(y==-1)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,s,sp);
-						keyc++;
-						c[keyc]=a[keya];
-						a[keya]=-1;
-						keya--;
+						swap(a,c,&keya,&keyc);
 					}
 					else if(x==-1)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,sp,s);
-						keya++;
-						a[keya]=c[keyc];
-						c[keyc]=-1;
-						keyc--;
+						swap(c,a,&keyc,&keya);
 					}
 					else if(x<y)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,s,sp);
-						keyc++;
-						c[keyc]=a[keya];
-						a[keya]=-1;
-						keya--;	
+						swap(a,c,&keya,&keyc);
 					}
 					else if(y<x)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,sp,s);
-						keyc++;
-						a[keya]=c[keyc];
-						c[keyc]=-1;
-						keyc--;
+						swap(c,a,&keyc,&keya);
 					}
 				}
 				else if(i%3==2)
@@ -247,34 +207,22 @@ int main(int argc, char const *argv[])
 					if(y==-1)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,s,d);
-						keyb++;
-						b[keyb]=a[keya];
-						a[keya]=-1;
-						keya--;
+						swap(a,b,&keya,&keyb);
 					}
 					else if(x==-1)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,d,s);
-						keya++;
-						a[keya]=b[keyb];
-						b[keyb]=-1;
-						keyb--;
+						swap(b,a,&keyb,&keya);
 					}
 					else if(x<y)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,s,d);
-						keyb++;
-						b[keyb]=a[keya];
-						a[keya]=-1;
-						keya--;
+						swap(a,b,&keya,&keyb);
 					}
 					else if(y<x)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,d,s);
-						keya++;
-						a[keya]=b[keyb];
-						b[keyb]=-1;
-						keyb--;
+						swap(b,a,&keyb,&keya);
 					}
 				}
 				else
@@ -284,34 +232,22 @@ int main(int argc, char const *argv[])
 					if(y==-1)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,sp,d);
-						keyb++;
-						b[keyb]=c[keyc];
-						c[keyc]=-1;
-						keyc--;
+						swap(c,b,&keyc,&keyb);
 					}
 					else if(x==-1)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,d,sp);
-						keyc++;
-						c[keyc]=b[keyb];
-						b[keyb]=-1;
-						keyb--;
+						swap(b,c,&keyb,&keyc);
 					}
 					else if(x<y)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,sp,d);
-						keyb++;
-						b[keyb]=c[keyc];
-						c[keyc]=-1;
-						keyc--;
+						swap(c,b,&keyc,&keyb);
 					}
 					else if(y<x)
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,d,sp);
-						keyc++;
-						c[keyc]=b[keyb];
-						b[keyb]=-1;
-						keyb--;
+						swap(b,c,&keyb,&keyc);
 					}	
 				}
 			}
