@@ -12,7 +12,7 @@ Date: 25/08/16
 
 static int count=0;
 
-void DiskMove(int n,char source,char dest,char spare)
+void DiskMove(int n,char source,char dest,char spare)				//Recursive method function
 {
 	if(n==1)
 	{
@@ -53,7 +53,7 @@ int main(int argc, char const *argv[])
 	int n;
 	printf("Enter the number of disks : ");
 	scanf("%d",&n);
-	if(selection && n%2==0)
+	if(selection && n%2==0)					//This condition is to change the destination and auxilary pegs in the iterative method
 		printf("\nConsidering Peg A as the source, Peg C as the destination, and Peg B as the spare\n");
 	else
 		printf("\nConsidering Peg A as the source, Peg B as the destination, and Peg C as the spare\n");
@@ -65,20 +65,20 @@ int main(int argc, char const *argv[])
 		printf("The total moves taken to complete the movement : %d\n",count);
 		count=0;
 	}
-	else
+	else						//ITERATIVE METHOD
 	{
 		int a[n],b[n],c[n];
-		int i,keya=0,keyb=0,keyc=0;
+		int i,keya=0,keyb=0,keyc=0;		//keys are like the top pointers of the stack
 		for(i=0;i<n;++i)
 		{
-			a[i]=n-i;
-			b[i]=-1;
-			c[i]=-1;
+			a[i]=n-i;				//Peg A stack
+			b[i]=-1;				//Peg B stack (-1 values, i.e., empty)
+			c[i]=-1;				//Peg C stack (-1 values, i.e., empty)
 		}
-		keya=n-1;
-		int moves=(int)(pow(2,n))-1;
-		char s='A',d,sp;
-		if(n%2==1)
+		keya=n-1;					//Peg A is full
+		int moves=(int)(pow(2,n))-1;		//Total number of moves
+		char s='A',d,sp;					//character data types for pegs (for printing) || s-source, d-destination, sp-spare
+		if(n%2==1)					//Odd n calculations
 		{
 			d='C';
 			sp='B';
@@ -86,9 +86,9 @@ int main(int argc, char const *argv[])
 			{	
 				if(i%3==1)
 				{
-					int x=a[keya];
+					int x=a[keya];			//accessing the top elements of the stack
 					int y=b[keyb];
-					if(y==-1)
+					if(y==-1)				//Peg B empty
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,s,sp);
 						keyb++;
@@ -96,7 +96,7 @@ int main(int argc, char const *argv[])
 						a[keya]=-1;
 						keya--;
 					}
-					else if(x==-1)
+					else if(x==-1)			//Peg A empty
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,sp,s);
 						keya++;
@@ -104,7 +104,7 @@ int main(int argc, char const *argv[])
 						b[keyb]=-1;
 						keyb--;
 					}
-					else if(x<y)
+					else if(x<y)			//Peg B has larger disk on the top than Peg A
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,s,sp);
 						keyb++;
@@ -112,7 +112,7 @@ int main(int argc, char const *argv[])
 						a[keya]=-1;
 						keya--;	
 					}
-					else if(y<x)
+					else if(y<x)			//Peg A has larger disk on the top than Peg B
 					{
 						printf("[%d] Move disc from Peg %c to Peg %c\n",i,sp,s);
 						keya++;
@@ -197,7 +197,7 @@ int main(int argc, char const *argv[])
 				}
 			}
 		}
-		else
+		else 				//Even n calculations
 		{
 			d='B';
 			sp='C';
