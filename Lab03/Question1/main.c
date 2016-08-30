@@ -8,7 +8,7 @@ Date : 01/09/2016
 #include <stdlib.h>
 #include "queue_header.h"
 
-static int count;
+static int count;				//to maintain the index of the number of steps
 
 int main(int argc, char const *argv[])
 {
@@ -21,8 +21,8 @@ int main(int argc, char const *argv[])
 	printf("Enter the elimination rule : ");
 	scanf("%d",&k);
 	printf("The removal sequence is as follows : \n\n");
-	queue main_q=allocate(n);
-	for(i=0;i<n;++i)
+	queue main_q=allocate(n);						//THE MAIN QUEUE
+	for(i=0;i<n;++i)	
 		push(&main_q,i+1);
 	for(i=1;main_q.curr_size>1;++i)
 	{

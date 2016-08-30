@@ -7,7 +7,7 @@ Date : 01/09/2016
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct node{
+typedef struct node{				//Struct implementation of array-implemented queue
 	int front;
 	int rear;
 	int *qu;
@@ -15,7 +15,7 @@ typedef struct node{
 	int max_size;
 }queue;
 
-queue allocate(int n);
-void push(queue *p,int data);
-int pop(queue *p);
-int front_element(queue *p);
+queue allocate(int n);				//Allocating space for the dynamic array
+void push(queue *p,int data);		//Push function (from the rear)
+int pop(queue *p);					//Pop function (from the front)
+int front_element(queue *p);		//To show the front element of the queue
