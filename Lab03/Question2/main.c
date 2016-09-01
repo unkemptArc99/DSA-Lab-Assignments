@@ -15,13 +15,20 @@ int main(int argc, char const *argv[])
 {
 	count=0;
 	index=0;
-	int n,k,i,j;
+	int flag1=0,flag2=0;
+	int n=-1,k=-1,i,j;
 	printf("\nWELCOME TO THE HOT POTATO PROBLEM OR THE JOSEPHUS PROBLEM SIMULATOR\n");
 	printf("\n-------------------------------------------------------------------\n");
 	printf("\nEnter the number of children going to participate the game : ");
-	scanf("%d",&n);
+	while(scanf("%d",&n)!=1 || n<0)
+	{
+		printf("WRONG INPUT!\n");
+	}
 	printf("Enter the elimination rule : ");
-	scanf("%d",&k);
+	while(scanf("%d",&k)!=1 || k<0)
+	{
+		printf("WRONG INPUT!\n");
+	}
 	printf("The removal sequence is as follows : \n\n");
 	stack stack1=allocate(n);						//STACK 1
 	stack stack2=allocate(n);						//STACK 2

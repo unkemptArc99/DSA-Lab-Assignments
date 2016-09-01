@@ -17,9 +17,15 @@ int main(int argc, char const *argv[])
 	printf("\nWELCOME TO THE HOT POTATO PROBLEM OR THE JOSEPHUS PROBLEM SIMULATOR\n");
 	printf("\n-------------------------------------------------------------------\n");
 	printf("\nEnter the number of children going to participate the game : ");
-	scanf("%d",&n);
+	while(scanf("%d",&n)!=1 || n<0)
+	{
+		printf("WRONG INPUT!\n");
+	}
 	printf("Enter the elimination rule : ");
-	scanf("%d",&k);
+	while(scanf("%d",&k)!=1 || k<0)
+	{
+		printf("WRONG INPUT!\n");
+	}
 	printf("The removal sequence is as follows : \n\n");
 	queue main_q=allocate(n);						//THE MAIN QUEUE
 	for(i=0;i<n;++i)	
