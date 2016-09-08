@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
 	printf("WELCOME TO THE PARANTHESIS CHECKER\n");
 	printf("\n----------------------------------\n");
 	printf("Please enter the expression to check (or 0 to exit) : \n");
-	char string[20];
+	char string[10000];
 	scanf("%s",string);
 	if(strcmp(string,"0")==0)
 		return 0;
