@@ -39,6 +39,8 @@ bool para_check(stack p)					//This function maintains an index which is increse
 			index++;
 		else if(p.st[i]==')')
 			index--;
+		if(index<0)
+			break;
 	}
 	if(index==0)
 		return true;
