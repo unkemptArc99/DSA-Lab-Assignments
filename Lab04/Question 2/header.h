@@ -8,18 +8,18 @@ Date : 08/09/2016
 #include <stdlib.h>
 #include <stdbool.h>
 
-struct node
+struct node								//Struct implementation of Stack
 {
     int info;
     struct node *ptr;
 }*top,*top1,*temp,*temp1;
 
-int topelement();
-void push(int data);
-int pop();
-bool empty();
-void display();
-void destroy();
-void create();
-void reverse();
-void insert(int data);
+int topelement();						//Displays top element of the stack
+void push(int data);					//Pushes elements into the stack
+int pop();								//Pops elements from the stack
+bool empty();							//Checks if the stack is empty or not
+void display();							//Displays all the elements of stack
+void destroy();							//Destroys the stack
+void create();							//Initial allocation of the stack
+void reverse();							//Main reverse function which is exteriorly recursed
+void insert(int data);					//intrinsic reverse function which holds the value into a call stack and then inserts it

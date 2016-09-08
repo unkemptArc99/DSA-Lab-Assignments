@@ -14,7 +14,7 @@ typedef struct node{
 	int max_size;
 }stack;
 
-stack allocate(int n);
-bool push(stack *p,char data);
-bool para_check(stack p);
-void destroy(stack *p);
+stack allocate(int n);						//allocates memory for the stack
+bool push(stack *p,char data);				//pushes elements into the stack
+bool para_check(stack p);					//Paranthesis check function
+void destroy(stack *p);						//Destroys the stack

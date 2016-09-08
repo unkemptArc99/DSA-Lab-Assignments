@@ -30,8 +30,8 @@ bool push(stack *p,char data)
 	}
 }
 
-bool para_check(stack p)
-{
+bool para_check(stack p)					//This function maintains an index which is incresed when it reads '(' and decreased when it reads ')'
+{											//Thus, at the end we only need to check if index is 0 or not
 	int index=0,i=0;
 	for(i=0;i<=p.top;++i)
 	{

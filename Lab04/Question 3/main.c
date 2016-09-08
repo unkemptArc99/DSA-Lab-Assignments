@@ -13,7 +13,7 @@ int main()
 	int no,ch,e;
 	printf("Stack implementation using queue\n");
 	printf("\n--------------------------------\n");
-	printf("\n 1 - Push");
+	printf("\n 1 - Push");                                             //All choices are listed
     printf("\n 2 - Pop");
     printf("\n 3 - Top");
     printf("\n 4 - Exit");
@@ -41,7 +41,7 @@ int main()
             	printf("Cannot push! Stack full\n");
             else
             {
-            	while(q1.curr_size>0)
+            	while(q1.curr_size>0)                              //Pushing all the remaining elements into another stack so that the new element can come at the top
             	{
             		int x=pop(&q1);
             		push(&q2,x);

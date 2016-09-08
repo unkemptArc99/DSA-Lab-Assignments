@@ -98,7 +98,10 @@ void create()
     top = NULL;
 }
 
-void insert(int data)
+void insert(int data)                   /** Hold all items in Function Call Stack until we
+                                        reach end of the stack. When the stack becomes
+                                        empty, the above if part is executed and the item is inserted
+                                        at the bottom */
 {
 	if(empty())
 		push(data);
@@ -106,6 +109,8 @@ void insert(int data)
 	{
 		int x=pop();
 		insert(data);
+                                        /* Once the item is inserted at the bottom, push all
+                                            the items held in Function Call Stack */
 		push(x);
 	}
 }
@@ -114,9 +119,14 @@ void reverse()
 {
 	if(!empty())
 	{
+        /* Hold all items in Function Call Stack until we
+           reach end of the stack */
 		int x=pop();
 		printf("Reversing %d\n",x);
 		reverse();
+        /* Insert all the items (held in Function Call Stack)
+           one by one from the bottom to top. Every item is
+           inserted at the bottom */
 		insert(x);
 	}
 }

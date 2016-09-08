@@ -66,17 +66,17 @@ int pop(queue *p)
 
 int front_element(queue *p)
 {
-	return p->qu[p->front];
+	return p->qu[p->front];					//returning top element
 }
 
-void display(queue *p)
+void display(queue *p)						//function to display the contents of the queue
 {
 	int i=p->front;
 	while(i!=p->rear)
 	{
 		printf("%d ",p->qu[i]);
 		i++;
-		if(i==p->max_size)
+		if(i==p->max_size)					//cyclicity of the index
 			i=0;
 	}
 	printf("%d\n",p->qu[i]);
