@@ -61,6 +61,8 @@ int main(int argc, char const *argv[])
 	printf("4 - Exit\n");
 	int **arr=NULL;
 	int ch,n,m;
+	n=atoi(argv[1]);
+	m=atoi(argv[2]);
 	char string[10000];
 	clock_t begin,end;
 	double time_spent;
@@ -71,10 +73,6 @@ int main(int argc, char const *argv[])
 		switch(ch)
 		{
 			case 1:
-				printf("Enter the number of rows : ");
-				scanf("%d",&n);
-				printf("Enter the number of columns : ");
-				scanf("%d",&m);
 				printf("Initialising matrix..............\n");
 				begin=clock();
 				arr=maker(n,m);

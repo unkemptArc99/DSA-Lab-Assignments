@@ -66,13 +66,16 @@ int compareStrings(char *a,char *b)
 	}
 }
 
-void countTillThisNum(int num)
+void countTillThisNum(int *num)
 {
-	if(num==1)
-		printf("%d\n",num);
+	int *n=num;
+	if(*num==1)
+		printf("%d\n",*n);
 	else
 	{
-		countTillThisNum(num-1);
-		printf("%d\n",num);
+		*n-=1;
+		countTillThisNum(n);
+		*n+=1;
+		printf("%d\n",*n);
 	}
 }

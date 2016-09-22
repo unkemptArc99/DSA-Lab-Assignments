@@ -15,23 +15,7 @@ void append ( struct node **q, int num )
 		temp = ( struct node * ) malloc ( sizeof ( struct node ) ) ;
 		temp -> data = num ;
 		temp -> link = NULL ;
-		int flag=0;
-		while(flag==0)
-		{
-			printf("Enter the random node to assign (0-indexed) : ");
-			int r;
-			scanf("%d",&r);
-			int i;
-			struct node *temp1;
-			temp1=(struct node *)malloc(sizeof(struct node));
-			temp1=*q;
-			for(i=0;i<=r;++i)
-			{
-				if(temp1->link==NULL)
-					
-				temp1=temp1->link;
-			}
-		}
+		temp -> random = NULL;
 		*q = temp ;
 	}
 	else
@@ -46,57 +30,46 @@ void append ( struct node **q, int num )
 		r = ( struct node * ) malloc ( sizeof ( struct node ) ) ;
 		r -> data = num ;
 		r -> link = NULL ;
+		r -> random = NULL;
 		temp -> link = r ;//temp is pointing to last node
 	}
 }
 
-/* adds a new node at the beginning of the linked list */
-void addatbeg ( struct node **q, int num )
+//function for the input of random pointers
+void randominit(struct node **q,int count)
 {
-	struct node *temp ;
-
-	/* add new node */
-	temp = ( struct node * ) malloc ( sizeof ( struct node ) ) ;
-
-	temp -> data = num ;
-	temp -> link = *q ;
-	*q = temp ;
-}
-
-/* adds a new node after the specified number of nodes */
-void addafter ( struct node *q, int loc, int num )
-{
-	struct node *temp, *r ;
-	int i ;
-
-	temp = q ;
-	/* skip to desired portion */
-	for ( i = 0 ; i < loc ; i++ )
+	struct node *temp;				//Main loop pointer
+	temp=*q;
+	while(temp!=NULL)
 	{
-		temp = temp -> link ;
-
-		/* if end of linked list is encountered */
-		if ( temp == NULL )
+		int num;
+		printf("Enter the random node to assign (0-indexed) (less than %d [this is the size of the current list]) : ",count);
+		scanf("%d",&num);
+		int i;
+		struct node *temp1;
+		temp1=*q;
+		int flag=0;
+		while(temp1!=NULL)
 		{
-			printf ( "There are less than %d elements in list\n", loc ) ;
-			return ;
+			if(temp1->data==num)
+			{
+				temp->random=temp1;
+				flag=1;
+				break;
+			}
+			temp1=temp1->link;
 		}
-	}//After this temp is pointing to loc
-
-	/* insert new node */
-	r = ( struct node * ) malloc ( sizeof ( struct node ) ) ;
-	r -> data = num ;
-	r -> link = temp -> link ;
-	temp -> link = r ;
+		temp=temp->link;
+	}
 }
 
-/* displays the contents of the linked list */
 void display ( struct node *q )
 {
 	/* traverse the entire linked list */
+	printf("%16s %16s %16s %16s\n","Value","Address","Next Pointer","Random Pointer");
 	while ( q != NULL )
 	{
-		printf ( "%d ", q -> data ) ;
+		printf ( "%16d %16p %16p %16p\n", q -> data, q, q->link, q->random ) ;
 		q = q -> link ;
 	}
 	printf ( "\n" ) ;
@@ -117,37 +90,30 @@ int count ( struct node * q )
 	return c ;
 }
 
-/* deletes the specified node from the linked list */
-void del ( struct node **q, int num )
+struct node *deepCopy(struct node **q)
 {
-	struct node *old, *temp ;
-
-	temp = *q ;
-
-	while ( temp != NULL )
-	{//either temp point to data or both will move
-		if ( temp -> data == num )
-		{
-			/* if node to be deleted is the first node in the linked list */
-			if ( temp == *q )
-				*q = temp -> link ;
-//modify head
-			/* deletes the intermediate nodes in the linked list */
-			else
-				old -> link = temp -> link ;
-
-			/* free the memory occupied by the node */
-			free ( temp ) ;
-			return ;
-		}
-
-		/* traverse the linked list till the last node is reached */
-		else
-		{
-			old = temp ;  /* old points to the previous node */
-			temp = temp -> link ;  /* go to the next node */
-		 }
+	struct node *original,*copy;
+	original=*q;
+	while(original!=NULL)
+	{
+		struct node *temp;
+		temp=(struct node *)malloc(sizeof(struct node));
+		temp->data=original->data;
+		temp->link=original->link;
+		temp->random=original->random;
+		original->link=temp;
+		original=temp->link;
 	}
-
-	printf ( "Element %d not found\n", num ) ;
+	original=*q;
+	copy=original->link;
+	struct node *temp=copy;
+	while(original->link!=NULL && copy->link!=NULL)
+	{
+		original->link=original->link->link;
+		copy->link=copy->link->link;
+		original=original->link;
+		copy=copy->link;
+	}
+	original=NULL;
+	return temp;
 }

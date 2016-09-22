@@ -64,7 +64,7 @@ int main(int argc, char const *argv[])
 			case 5:
 				printf("Enter the number (greater than or equal to 1) : ");
 				scanf("%d",&num);
-				countTillThisNum(num);
+				countTillThisNum(&num);
 				break;
 			case 6:
 				exit(0);
