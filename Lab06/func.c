@@ -22,5 +22,6 @@ randomlistnode *copyRandomList(randomlistnode *q)
 		original=original->next;
 		copy=copy->next;
 	}
+	original->next=NULL;
 	return temp;
 }

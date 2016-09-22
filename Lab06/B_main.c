@@ -53,6 +53,10 @@ void printDelete(int **matrix,int n,int m)
 }
 int main(int argc, char const *argv[])
 {
+	if(argc!=3)
+	{
+		printf("Wrong Inputs! Type \"./B_main <no. of rows> <no. of cols>\"\n");
+	}
 	system("clear");
 	printf("2D MATRIX CREATER\n");
 	printf("1 - Initialise 2D matrix with random numbers (with a max limit of 100000)\n");

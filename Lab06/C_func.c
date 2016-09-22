@@ -40,18 +40,18 @@ void randominit(struct node **q,int count)
 {
 	struct node *temp;				//Main loop pointer
 	temp=*q;
-	while(temp!=NULL)
+	while(temp!=NULL)				//Main Loop starts
 	{
 		int num;
 		printf("Enter the random node to assign (0-indexed) (less than %d [this is the size of the current list]) : ",count);
 		scanf("%d",&num);
 		int i;
-		struct node *temp1;
+		struct node *temp1;						//Auxiliary Pointer to search the random node
 		temp1=*q;
 		int flag=0;
-		while(temp1!=NULL)
+		while(temp1!=NULL)						//Random Node is being searched
 		{
-			if(temp1->data==num)
+			if(temp1->data==num)				//If index matches, then assign the random pointer
 			{
 				temp->random=temp1;
 				flag=1;
@@ -92,28 +92,38 @@ int count ( struct node * q )
 
 struct node *deepCopy(struct node **q)
 {
-	struct node *original,*copy;
+	struct node *original,*copy;							//Maintaining two pointers for manipulation
 	original=*q;
-	while(original!=NULL)
+	while(original!=NULL)									//Starting a loop to copy the nodes one after another
 	{
-		struct node *temp;
+		/*the whole loop is copying the Nth node and replacing it 
+		just after the Nth node*/
+		struct node *temp;									
 		temp=(struct node *)malloc(sizeof(struct node));
 		temp->data=original->data;
-		temp->link=original->link;
+		temp->link=original->link;							
 		temp->random=original->random;
 		original->link=temp;
 		original=temp->link;
+	}
+	original=*q;
+	while(original!=NULL)
+	{
+		//this loop is copying the random pointers
+		original->link->random=original->random->link;
+		original=original->link->link;
 	}
 	original=*q;
 	copy=original->link;
 	struct node *temp=copy;
 	while(original->link!=NULL && copy->link!=NULL)
 	{
+		//seperating the copied nodes from the original one
 		original->link=original->link->link;
 		copy->link=copy->link->link;
 		original=original->link;
 		copy=copy->link;
 	}
-	original=NULL;
+	original->link=NULL;
 	return temp;
 }

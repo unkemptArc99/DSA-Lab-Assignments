@@ -46,6 +46,8 @@ int main(int argc, char const *argv[])
 				display(copy);
 				break;
 			case 5:
+				free(main);
+				free(copy);
 				exit(0);
 			default:
 				printf("WRONG INPUT!!\n");
