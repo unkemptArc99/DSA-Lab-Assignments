@@ -86,6 +86,17 @@ void display_exact(double *theta_exact,int n)
 	}
 }
 
+void display_calculated(double *theta_calculated,int n)
+{
+	int i;
+	printf("The calculated theta values are :\n");
+	printf("%12s %12s\n","N","Theta_Calculated");
+	for (i = 0; i < n; ++i)
+	{
+		printf("%12d %11lf\n",i+1,theta_calculated[i]);
+	}
+}
+
 void pivot_maker(double **a,double *r,int n)
 {
 	int i,j,k;
@@ -99,7 +110,7 @@ void pivot_maker(double **a,double *r,int n)
 				if(k<n)
 					a[j][k]=a[j][k]-c*a[i][k];
 				else
-					r[k]=r[k]-c*r[i];
+					r[j]=r[j]-c*r[i];
 			}
 		}
 	}
@@ -129,6 +140,7 @@ double error_calculator(double *theta_exact,double *theta_calculated,int n)
 	for(i=0;i<n;++i)
 		error+=(theta_exact[i]-theta_calculated[i])*(theta_exact[i]-theta_calculated[i]);
 	error=sqrt(error/n);
+	return error;
 }
 
 /*void file_printer(double **a,double *r,int n,double *theta_calculated,double *theta_exact)
@@ -179,6 +191,8 @@ int main(int argc, char const *argv[])
 	printf("\n");
 	double *theta_calculated;								//
 	theta_calculated=back_substitution(a,r,n);
+	display_calculated(theta_calculated,n);
+	printf("\n");
 	double error=error_calculator(theta_exact,theta_calculated,n);
 	printf("The error is %lf\n",error);
 	//file_printer(a,r,n,theta_calculated,theta_exact);
