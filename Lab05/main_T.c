@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <time.h>
 
 double *r_maker(int n)
 {
@@ -65,7 +66,7 @@ double *theta_exact_calculator(int n,int beta,double deltax)
 	double *theta_exact;
 	double count;
 	theta_exact=(double *)malloc(n*sizeof(double));
-	for (i = 0,count=0.0; i < n; ++i,count+=deltax)
+	for (i = 0,count=deltax; i < n; ++i,count+=deltax)
 	{
 		theta_exact[i]=(cosh(sqrt(beta)*(1-count)))/(cosh(sqrt(beta)));	
 	}
@@ -143,10 +144,37 @@ double error_calculator(double *theta_exact,double *theta_calculated,int n)
 	return error;
 }
 
+void file_printer(int n,double *theta_calculated,double *theta_exact,double error)
+{
+	FILE *fp1,*fp2;
+	int i;
+	fp1=fopen("result.dat","w");
+	fp2=fopen("result_error.dat","a");
+	fprintf(fp1,"xi\tTheta_calculated\tTheta_exact\tError\n");
+	for(i=0;i<n;++i)
+	{
+		fprintf(fp1,"%d\t%lf\t%lf\t%lf\n",i+1,theta_calculated[i],theta_exact[i],error);
+	}
+	fprintf(fp2,"%d\t%lf\n",n,error);
+	fclose(fp1);
+	fclose(fp2);
+}
+
+void graph_plot()
+{
+	int i;
+	char *commandsForGnuplot[]={"set terminal png","set output \'theta_graph.png\'","set title \"N v/s Theta Values\"","set xlabel \"N\"","set ylabel \"theta\"","set key outside","plot \"result.dat\" using 1:2 with lines, \"result.dat\"using 1:3 with lines","set output \'Error.png\'","set title \"N v/s Error\"","set xlabel \"N\"","set ylabel \"Error\"","set key outside","plot \"result_error.dat\" using 1:2 with lines","set output \'CalcvsExact.png\'","set title \"Theta_Exact v/s Theta_Calculated\"","set xlabel \"Theta_Calculated\"","set ylabel \"Theta_Exact\"","set key outside","plot \"result.dat\" using 2:3 with lines"};
+	FILE *gnuplotPipe=popen("gnuplot -persistent","w");
+	for(i=0;i<21;++i)
+		fprintf(gnuplotPipe,"%s \n",commandsForGnuplot[i]);
+	pclose(gnuplotPipe);
+}
+
 int main(int argc, char const *argv[])
 {
 	system("clear");
 	printf("Please enter the value of n : ");
+	double size=0.0;
 	int n,i,j;
 	double beta;
 	scanf("%d",&n);
@@ -158,17 +186,27 @@ int main(int argc, char const *argv[])
 	b=b_maker(n,deltax);
 	a=a_maker(n,deltax);
 	d=d_maker(n,deltax,beta);
-	display_matrix(b,d,a,r,n);
-	printf("\n");
+	size+=(4*n*8)/1024.00;
+	
 	double *theta_exact=theta_exact_calculator(n,beta,deltax);
-	display_exact(theta_exact,n);
-	printf("\n");
+	
 	double *theta_calculated=theta_calculator(n,r,d,a,b);
-	display_calculated(theta_calculated,n);
-	printf("\n");
-	display_matrix(b,d,a,r,n);
-	printf("\n");
+	
 	double error=error_calculator(theta_exact,theta_calculated,n);
 	printf("The error is %lf\n",error);
+
+	printf("Writing the output into file....\n");
+	clock_t begin=clock();
+	file_printer(n,theta_calculated,theta_exact,error);
+	clock_t end=clock();
+	double time_spent=(double)(end-begin)/CLOCKS_PER_SEC;
+	printf("Time taken to write = %lfs\n",time_spent);
+	printf("\n");
+
+	printf("The storage used by the program is %lf kb\n",size);
+	printf("\n");
+	
+	printf("Plotting the graphs..\n");
+	graph_plot();
 	return 0;
 }

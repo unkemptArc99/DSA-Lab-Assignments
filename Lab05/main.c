@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <time.h>
 
 double **maker(int n,int beta)
 {
@@ -28,9 +29,7 @@ double **maker(int n,int beta)
 				a[i][j]=-(2*(n-1)*(n-1)+beta);
 			else
 				a[i][j]=0;
-			printf("%10lf ",a[i][j]);
 		}
-		printf("\n");
 	}
 	return a;
 }
@@ -41,7 +40,7 @@ double *theta_exact_calculator(int n,int beta,double deltax)
 	double *theta_exact;
 	double count;
 	theta_exact=(double *)malloc(n*sizeof(double));
-	for (i = 0,count=0.0; i < n; ++i,count+=deltax)
+	for (i = 0,count=deltax; i < n; ++i,count+=deltax)
 	{
 		theta_exact[i]=(cosh(sqrt(beta)*(1-count)))/(cosh(sqrt(beta)));	
 	}
@@ -143,32 +142,36 @@ double error_calculator(double *theta_exact,double *theta_calculated,int n)
 	return error;
 }
 
-/*void file_printer(double **a,double *r,int n,double *theta_calculated,double *theta_exact)
+void file_printer(int n,double *theta_calculated,double *theta_exact,double error)
 {
-	FILE *fp;
-	char *string;
-	if(n==11)
-		*string="result_11.dat";
-	else if(n==101)
-		*string="result_101.dat";
-	else if(n==501)
-		*string="result_501.dat";
-	else if(n==1001)
-		*string="result_1001.dat";
-	else
-		*string="result.dat";
+	FILE *fp1,*fp2;
 	int i;
-	fp=fopen(string,"w");
+	fp1=fopen("result.dat","w");
+	fp2=fopen("result_error.dat","a");
+	fprintf(fp1,"xi\tTheta_calculated\tTheta_exact\tError\n");
 	for(i=0;i<n;++i)
 	{
-
+		fprintf(fp1,"%d\t%lf\t%lf\t%lf\n",i+1,theta_calculated[i],theta_exact[i],error);
 	}
+	fprintf(fp2,"%d\t%lf\n",n,error);
+	fclose(fp1);
+	fclose(fp2);
+}
 
-}*/
+void graph_plot()
+{
+	int i;
+	char *commandsForGnuplot[]={"set terminal png","set output \'theta_graph.png\'","set title \"N v/s Theta Values\"","set xlabel \"N\"","set ylabel \"theta\"","set key outside","plot \"result.dat\" using 1:2 with lines, \"result.dat\"using 1:3 with lines","set output \'Error.png\'","set title \"N v/s Error\"","set xlabel \"N\"","set ylabel \"Error\"","set key outside","plot \"result_error.dat\" using 1:2 with lines"};
+	FILE *gnuplotPipe=popen("gnuplot -persistent","w");
+	for(i=0;i<14;++i)
+		fprintf(gnuplotPipe,"%s \n",commandsForGnuplot[i]);
+	pclose(gnuplotPipe);
+}
 
 int main(int argc, char const *argv[])
 {
 	system("clear");
+	double size=0.0;
 	printf("Please enter the value of n : ");
 	int n,i,j;
 	double beta;
@@ -178,28 +181,39 @@ int main(int argc, char const *argv[])
 	double deltax=(1/(double)(n-1));
 	double **a;												//(//)
 	a=maker(n,beta);
+	size+=((n*n)*8)/1024.00;
 	double *theta_exact;									//
 	theta_exact=theta_exact_calculator(n,beta,deltax);	
+	size+=n*8/1024.00;
 	double *r;												//
-	r=r_matrix(n);	
-	display(a,r,n);
-	printf("\n");
-	display_exact(theta_exact,n);
-	printf("\n");
+	r=r_matrix(n);
+	size+=n*8/1024.00;	
+
 	pivot_maker(a,r,n);
-	display(a,r,n);
-	printf("\n");
+
 	double *theta_calculated;								//
 	theta_calculated=back_substitution(a,r,n);
-	display_calculated(theta_calculated,n);
-	printf("\n");
+	size+=n*8/1024.00;
+
 	double error=error_calculator(theta_exact,theta_calculated,n);
 	printf("The error is %lf\n",error);
-	//file_printer(a,r,n,theta_calculated,theta_exact);
+	printf("Writing the output into file....\n");
+	clock_t begin=clock();
+	file_printer(n,theta_calculated,theta_exact,error);
+	clock_t end=clock();
+	double time_spent=(double)(end-begin)/CLOCKS_PER_SEC;
+	printf("Time taken to write = %lfs\n",time_spent);
+	printf("\n");
+
+	printf("The storage used by the program is %lf kb\n",size);
+	printf("\n");
+	printf("Plotting the graphs..\n");
+	graph_plot();
 
 	for(i=0;i<n;++i)
 		free(a[i]);
 	free(a);
 	free(theta_exact);
+	free(theta_calculated);
 	return 0;
 }
