@@ -15,7 +15,7 @@ struct Frontier{
 };
 
 bool** create_2d(int size);
-int* create_1d(int size);
+//int* create_1d(int size);
 void initialize(bool*** maze, int size);
 void create_maze(bool*** maze, int maze_size);
 struct vertex* create_vertices(int size);
@@ -50,11 +50,11 @@ bool** create_2d(int size){
 	return temp;
 }
 
-int* create_1d(int size){
+/*int* create_1d(int size){
 	int* temp;
 	temp = (int*)malloc(size*sizeof(int));
 	return temp;
-}
+}*/
 
 bool* create_bool(int size){
 	bool* temp;

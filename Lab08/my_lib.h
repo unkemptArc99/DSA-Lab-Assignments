@@ -92,6 +92,3 @@ int find(struct subset subsets[], int i);
 void Union(struct subset subsets[], int x, int y);
 int myComp(const void* a, const void* b);
 void KruskalMST(struct Graph_B* graph);
-
-
-

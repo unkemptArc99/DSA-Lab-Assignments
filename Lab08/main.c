@@ -47,10 +47,7 @@ int main(){
         arr[i] = (int *)malloc(graph->V * sizeof(int)); 
 
      bool visited[V];
-     int dist[V], 
-         parent[V],
-         state[MAX],
-         queue[MAX];
+     int dist[V],parent[V],state[MAX],queue[MAX];
 	system("clear");  
     while (1){
         printf("\n 1 : DFS");
