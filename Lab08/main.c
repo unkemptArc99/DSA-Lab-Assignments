@@ -41,13 +41,13 @@ int main(){
 
     }
 
-     int n= graph->V;          
-     int *arr[graph->V];
+    int n= graph->V;          
+    int *arr[graph->V];
     for (i=0; i<graph->V; i++)
         arr[i] = (int *)malloc(graph->V * sizeof(int)); 
 
-     bool visited[V];
-     int dist[V],parent[V],state[MAX],queue[MAX];
+    bool visited[V];
+    int dist[V],parent[V],state[MAX],queue[MAX];
 	system("clear");  
     while (1){
         printf("\n 1 : DFS");
